@@ -1,4 +1,6 @@
 import logging
+from collections.abc import Callable
+from functools import wraps
 from types import TracebackType
 from typing import Any, Self
 
@@ -60,5 +62,32 @@ class HttpClient:
     async def options(self, url: str, **kwargs: Any) -> ClientResponse:
         return await self._request('OPTIONS', url, **kwargs)
 
+    async def get(self, url: str, **kwargs: Any) -> ClientResponse:
+        return await self._request('GET', url, **kwargs)
+
     async def post(self, url: str, **kwargs: Any) -> ClientResponse:
         return await self._request('POST', url, **kwargs)
+
+
+class AuthAuthMixin:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._is_authenticated = False
+
+    @property
+    def is_authenticated(self) -> bool:
+        return self._is_authenticated
+
+    def _authenticate(self) -> None:
+        self._is_authenticated = True
+        logger.debug('Authentication has been completed successfully')
+
+
+def login_required(func: Callable) -> Callable:
+    @wraps(func)
+    def wrapper(self: AuthAuthMixin, *args: Any, **kwargs: Any) -> Any:
+        if not self.is_authenticated:
+            raise RuntimeError('Authentication required')
+        return func(self, *args, **kwargs)
+
+    return wrapper

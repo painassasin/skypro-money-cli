@@ -6,7 +6,7 @@ import pytest
 
 import config
 from clients import SkyProClient
-from clients.errors import SkyProAuthError, SkyProError
+from clients.errors import AuthenticationError, SkyProError
 from tests.utils import generate_random_hex
 
 
@@ -57,7 +57,7 @@ class TestLogin:
         """
         mock_aioresponse.post(login_url, headers={'Location': login_url}, status=302)
 
-        with pytest.raises(SkyProAuthError, match='Invalid credentials'):
+        with pytest.raises(AuthenticationError, match='Invalid credentials'):
             await skypro_client.login()
         assert not skypro_client.is_authenticated
 

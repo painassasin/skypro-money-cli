@@ -1,26 +1,33 @@
 import logging
+from datetime import date
 
 import config
 
-from .errors import SkyProAuthError, SkyProError
-from .http_client import HttpClient
+from .dto import AccountData
+from .errors import AuthenticationError, SkyProError
+from .http_client import AuthAuthMixin, HttpClient, login_required
 
 logger = logging.getLogger(__name__)
 
 
-class SkyProClient(HttpClient):
+class SkyProClient(AuthAuthMixin, HttpClient):
     def __init__(self) -> None:
         super().__init__(
             base_url=config.SKYPRO_BASE_URL, timeout=config.SKYPRO_TIMEOUT_IN_SECONDS
         )
-        self._is_authenticated: bool = False
 
-    @property
-    def is_authenticated(self) -> bool:
-        return self._is_authenticated
+    @login_required
+    async def get_account_data(self, start_date: date, end_date: date) -> AccountData:
+        params = {
+            'start_date': start_date.strftime('%Y-%m-%d'),
+            'end_date': end_date.strftime('%Y-%m-%d'),
+        }
+        response = await self.get('/mentor-cabinet/api/data/', params=params)
+        data = await response.json()
+        return AccountData.model_validate(data)
 
     async def login(self) -> None:
-        if self._is_authenticated:
+        if self.is_authenticated:
             logger.debug('Already authenticated in skypro')
             return
 
@@ -36,10 +43,9 @@ class SkyProClient(HttpClient):
         )
         if 'sessionid' not in response.cookies:
             logger.error('Authentication failed')
-            raise SkyProAuthError('Invalid credentials')
+            raise AuthenticationError('Invalid credentials')
 
-        self._is_authenticated = True
-        logger.debug('Authentication to skypro has been completed successfully')
+        self._authenticate()
 
     async def _fetch_csrf_token(self) -> str:
         logger.debug('Fetching csrf token')

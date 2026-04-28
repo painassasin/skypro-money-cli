@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "aiohttp>=3.13.5",
     "environs>=15.0.1",
+    "pydantic>=2.13.3",
 ]
 
 [dependency-groups]
@@ -39,6 +40,7 @@ ignore = [
     "EM101", # Exception must not use a string literal, assign to variable first
     "EM102", # Exception must not use an f-string literal, assign to variable first
     "TRY003", # Avoid specifying long messages outside the exception class
+    "RUF001", # String contains ambiguous symbol
 ]
 select = ["ALL"]
 preview = true

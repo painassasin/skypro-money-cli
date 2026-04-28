@@ -6,5 +6,5 @@ class HttpError(SkyProError):
     pass
 
 
-class SkyProAuthError(SkyProError):
+class AuthenticationError(HttpError):
     pass
