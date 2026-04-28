@@ -7,3 +7,7 @@ format:
 check:
 	ruff check .
 	ruff format --check .
+
+.PHONY: test
+test:
+	pytest -vv
