@@ -10,9 +10,6 @@ class SkyPro(BaseModel):
     email: str
     password: str
     base_url: str = 'https://operation-planning.sky.pro'
-    login_url: str = '/careusers/login/'
-    csrf_cookie_name: str = 'csrftoken'
-    timeout_in_seconds: int = 2
 
 
 class Settings(BaseSettings):

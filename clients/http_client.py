@@ -37,11 +37,14 @@ class HttpClient:
             await self.__session.close()
             self.__session = None
 
-    @property
-    def _session(self) -> ClientSession:
-        if self.__session is None or self.__session.closed:
-            raise RuntimeError('Session is not initialized or already closed')
-        return self.__session
+    async def options(self, url: str, **kwargs: Any) -> ClientResponse:
+        return await self._request('OPTIONS', url, **kwargs)
+
+    async def get(self, url: str, **kwargs: Any) -> ClientResponse:
+        return await self._request('GET', url, **kwargs)
+
+    async def post(self, url: str, **kwargs: Any) -> ClientResponse:
+        return await self._request('POST', url, **kwargs)
 
     async def _request(
         self,
@@ -62,11 +65,8 @@ class HttpClient:
             logger.info('HTTP response: %s %s -> %s', method, url, response.status)
             return response
 
-    async def options(self, url: str, **kwargs: Any) -> ClientResponse:
-        return await self._request('OPTIONS', url, **kwargs)
-
-    async def get(self, url: str, **kwargs: Any) -> ClientResponse:
-        return await self._request('GET', url, **kwargs)
-
-    async def post(self, url: str, **kwargs: Any) -> ClientResponse:
-        return await self._request('POST', url, **kwargs)
+    @property
+    def _session(self) -> ClientSession:
+        if self.__session is None or self.__session.closed:
+            raise RuntimeError('Session is not initialized or already closed')
+        return self.__session

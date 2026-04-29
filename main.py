@@ -1,8 +1,8 @@
 import asyncio
 import logging
+from datetime import UTC, date, datetime
 
-from clients.http_client import HttpClient
-from config import settings
+from clients.skypro_client import SkyProClient
 
 logging.basicConfig(
     level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -12,12 +12,14 @@ logger = logging.getLogger(__name__)
 
 
 async def main() -> None:
-    client = HttpClient(base_url=settings.skypro.base_url, timeout=3)
+    now = datetime.now(UTC)
 
-    async with client as api_client:
-        response = await api_client.options(settings.skypro.login_url)
-        logger.info(response)
-        response.release()
+    async with SkyProClient() as client:
+        data = await client.get_account_data(
+            start_date=date(now.year, now.month, 1),
+            end_date=date(now.year, now.month, now.day),
+        )
+    logger.info(data)
 
 
 if __name__ == '__main__':
