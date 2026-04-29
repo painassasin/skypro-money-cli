@@ -3,6 +3,7 @@ import logging
 from datetime import UTC, date, datetime
 
 from clients.skypro_client import SkyProClient
+from use_cases import get_work_summary
 
 logging.basicConfig(
     level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -12,14 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 async def main() -> None:
-    now = datetime.now(UTC)
-
-    async with SkyProClient() as client:
-        data = await client.get_account_data(
-            start_date=date(now.year, now.month, 1),
-            end_date=date(now.year, now.month, now.day),
-        )
-    logger.info(data)
+    work_summary = await get_work_summary(2026, 4)
+    for item in work_summary:
+        logger.info(item)
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from utils.work_costs import get_work_costs
+from utils import get_work_costs
 
 
 @pytest.fixture(autouse=True)
