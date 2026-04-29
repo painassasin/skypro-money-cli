@@ -1,12 +1,16 @@
 import logging
-from collections.abc import Callable
-from functools import wraps
 from types import TracebackType
 from typing import Any, Self
 
-from aiohttp import ClientError, ClientResponse, ClientSession, ClientTimeout
+from aiohttp import (
+    ClientError,
+    ClientResponse,
+    ClientResponseError,
+    ClientSession,
+    ClientTimeout,
+)
 
-from clients.errors import HttpError
+from .errors import HttpError
 
 logger = logging.getLogger(__name__)
 
@@ -29,17 +33,14 @@ class HttpClient:
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> bool | None:
-        if self.__session:  # pragma: nocover
+        if self.__session:
             await self.__session.close()
             self.__session = None
 
     @property
     def _session(self) -> ClientSession:
         if self.__session is None or self.__session.closed:
-            raise RuntimeError(
-                f'Session is not initialized. '
-                f'Use {self.__class__.__name__}() as client:'
-            )
+            raise RuntimeError('Session is not initialized or already closed')
         return self.__session
 
     async def _request(
@@ -48,16 +49,18 @@ class HttpClient:
         url: str,
         **kwargs: Any,
     ) -> ClientResponse:
-        logger.debug('HTTP request: %s %s', method, url)
+        logger.info('HTTP request: %s %s', method, url)
 
         try:
             response = await self._session.request(method, url, **kwargs)
             response.raise_for_status()
+        except ClientResponseError as e:
+            raise HttpError(f'HTTP {e.status}: {method} {url}') from e
         except (ClientError, TimeoutError) as e:
-            logger.exception('HTTP request failed: %s %s', method, url)
-            raise HttpError(f'Request failed {method} {url}') from e
-
-        return response
+            raise HttpError(f'Network error: {method} {url}') from e
+        else:
+            logger.info('HTTP response: %s %s -> %s', method, url, response.status)
+            return response
 
     async def options(self, url: str, **kwargs: Any) -> ClientResponse:
         return await self._request('OPTIONS', url, **kwargs)
@@ -67,27 +70,3 @@ class HttpClient:
 
     async def post(self, url: str, **kwargs: Any) -> ClientResponse:
         return await self._request('POST', url, **kwargs)
-
-
-class AuthAuthMixin:
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self._is_authenticated = False
-
-    @property
-    def is_authenticated(self) -> bool:
-        return self._is_authenticated
-
-    def _authenticate(self) -> None:
-        self._is_authenticated = True
-        logger.debug('Authentication has been completed successfully')
-
-
-def login_required(func: Callable) -> Callable:
-    @wraps(func)
-    def wrapper(self: AuthAuthMixin, *args: Any, **kwargs: Any) -> Any:
-        if not self.is_authenticated:
-            raise RuntimeError('Authentication required')
-        return func(self, *args, **kwargs)
-
-    return wrapper

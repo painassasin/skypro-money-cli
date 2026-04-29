@@ -5,6 +5,6 @@ from aioresponses.core import aioresponses
 
 
 @pytest.fixture(autouse=True)
-def mock_aioresponse() -> Iterator[aioresponses]:
+def mock_http() -> Iterator[aioresponses]:
     with aioresponses() as m:
         yield m

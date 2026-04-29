@@ -1,10 +1,4 @@
-class SkyProError(Exception):
-    pass
+class SkyProError(Exception): ...
 
 
-class HttpError(SkyProError):
-    pass
-
-
-class AuthenticationError(HttpError):
-    pass
+class HttpError(SkyProError): ...
