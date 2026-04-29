@@ -1,8 +1,7 @@
 import logging
 from datetime import date
 
-import config
-
+from config import settings
 from .dto import AccountData
 from .errors import AuthenticationError, SkyProError
 from .http_client import AuthAuthMixin, HttpClient, login_required
@@ -13,7 +12,8 @@ logger = logging.getLogger(__name__)
 class SkyProClient(AuthAuthMixin, HttpClient):
     def __init__(self) -> None:
         super().__init__(
-            base_url=config.SKYPRO_BASE_URL, timeout=config.SKYPRO_TIMEOUT_IN_SECONDS
+            base_url=settings.skypro.base_url,
+            timeout=settings.skypro.timeout_in_seconds
         )
 
     @login_required
@@ -34,12 +34,12 @@ class SkyProClient(AuthAuthMixin, HttpClient):
         logger.debug('Authenticating in skypro')
         csrf_token = await self._fetch_csrf_token()
         login_data = {
-            'email': config.SKYPRO_EMAIL,
-            'password': config.SKYPRO_PASSWORD,
+            'email': settings.skypro.email,
+            'password': settings.skypro.password,
             'csrfmiddlewaretoken': csrf_token,
         }
         response = await self.post(
-            config.SKYPRO_LOGIN_URL, data=login_data, allow_redirects=False
+            settings.skypro.login_url, data=login_data, allow_redirects=False
         )
         if 'sessionid' not in response.cookies:
             logger.error('Authentication failed')
@@ -49,8 +49,8 @@ class SkyProClient(AuthAuthMixin, HttpClient):
 
     async def _fetch_csrf_token(self) -> str:
         logger.debug('Fetching csrf token')
-        response = await self.options(config.SKYPRO_LOGIN_URL)
-        csrf_cookie = response.cookies.get(config.SKYPRO_CSRF_COOKIE_NAME)
+        response = await self.options(settings.skypro.login_url)
+        csrf_cookie = response.cookies.get(settings.skypro.csrf_cookie_name)
         if not csrf_cookie:
             raise SkyProError('CSRF token was not returned by server')
         return csrf_cookie.value

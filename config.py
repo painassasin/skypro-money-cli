@@ -1,14 +1,26 @@
 from pathlib import Path
 
-from environs import env
+from pydantic import BaseModel, Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path.cwd()
 
-env.read_env()
 
-SKYPRO_EMAIL = env('SKYPRO_EMAIL')
-SKYPRO_PASSWORD = env('SKYPRO_PASSWORD')
-SKYPRO_BASE_URL = 'https://operation-planning.sky.pro'
-SKYPRO_LOGIN_URL = '/careusers/login/'
-SKYPRO_CSRF_COOKIE_NAME = 'csrftoken'
-SKYPRO_TIMEOUT_IN_SECONDS = 2
+class SkyPro(BaseModel):
+    email: str
+    password: str
+    base_url: str = 'https://operation-planning.sky.pro'
+    login_url: str = '/careusers/login/'
+    csrf_cookie_name: str = 'csrftoken'
+    timeout_in_seconds: int = 2
+
+
+class Settings(BaseSettings):
+    skypro: SkyPro = Field(default_factory=SkyPro)
+
+    model_config = SettingsConfigDict(
+        env_nested_delimiter='__', env_file=BASE_DIR / '.env'
+    )
+
+
+settings = Settings()
