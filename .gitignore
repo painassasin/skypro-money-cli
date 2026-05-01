@@ -13,3 +13,4 @@ wheels/
 .env
 .python-version
 .coverage
+logs/
