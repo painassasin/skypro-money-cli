@@ -1,8 +1,6 @@
 import asyncio
 import logging
-from datetime import UTC, date, datetime
 
-from clients.skypro_client import SkyProClient
 from use_cases import get_work_summary
 
 logging.basicConfig(

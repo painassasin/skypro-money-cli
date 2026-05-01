@@ -13,6 +13,8 @@ class SkyPro(BaseModel):
 
 
 class Settings(BaseSettings):
+    tax_percent: float = 6.0
+
     skypro: SkyPro = Field(default_factory=SkyPro)
 
     model_config = SettingsConfigDict(
