@@ -8,15 +8,31 @@ from rich.console import Console
 from rich.table import Column, Table
 from typer import Option, Typer
 
-from clients.errors import SkyProError
-from use_cases import get_work_summary
-from use_cases.work_summary import WorkSummary
-from utils import format_price
+from skypro.clients.errors import SkyProError
+from skypro.use_cases import get_work_summary
+from skypro.use_cases.work_summary import WorkSummary
+from skypro.utils import format_price, get_work_costs
 
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 app = Typer(help='SkyPro Mentor Statistics Calculator')
 console = Console()
+
+
+@app.command()
+def work_costs() -> None:
+    """Show current work costs configuration"""
+    table = Table(
+        Column('Work Type', style='cyan'),
+        Column('Price', style='green'),
+        title='Work Costs Configuration',
+    )
+
+    work_costs_dict = get_work_costs()
+    for work_type, price in work_costs_dict.items():
+        table.add_row(work_type, format_price(price))
+
+    console.print(table)
 
 
 @app.command()
@@ -59,6 +75,7 @@ def _print_summary_table(year: int, month: int, *work_summary: WorkSummary) -> N
     total_price = sum(map(operator.itemgetter('total'), work_summary))
     total_price_with_tax = sum(map(operator.itemgetter('total_with_tax'), work_summary))
     table.add_row('Total', '', format_price(total_price))
+    table.add_row('Tax', '', format_price(total_price - total_price_with_tax))
     table.add_row('Total amount', '', format_price(total_price_with_tax))
     console.print(table)
 

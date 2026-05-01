@@ -3,10 +3,11 @@ from datetime import date
 from types import TracebackType
 from typing import Self
 
-from clients.dto import AccountDataResponse
-from clients.errors import HttpError
-from clients.http_client import HttpClient
-from config import settings
+from skypro.config import settings
+
+from .dto import AccountDataResponse
+from .errors import HttpError
+from .http_client import HttpClient
 
 logger = logging.getLogger(__name__)
 

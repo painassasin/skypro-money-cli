@@ -10,8 +10,8 @@ from urllib.parse import urljoin
 
 import pytest
 
-from clients import SkyProClient
-from clients.errors import HttpError
+from skypro.clients import SkyProClient
+from skypro.clients.errors import HttpError
 
 
 @pytest.fixture(scope='module')

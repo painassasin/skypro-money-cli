@@ -2,9 +2,9 @@ from calendar import monthrange
 from datetime import date
 from typing import TypedDict
 
-from clients import SkyProClient
-from config import settings
-from utils.work_costs import WorkCost, WorkType, get_work_costs
+from skypro.clients import SkyProClient
+from skypro.config import settings
+from skypro.utils.work_costs import WorkCost, WorkType, get_work_costs
 
 
 class WorkSummary(TypedDict):

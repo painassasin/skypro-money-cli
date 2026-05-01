@@ -2,7 +2,7 @@ import json
 from functools import cache
 from typing import Literal
 
-from config import BASE_DIR
+from skypro.config import BASE_DIR
 
 type WorkType = Literal['ДЗ', 'КР', 'ДР', 'Лайв', 'ИК']
 type WorkCost = int

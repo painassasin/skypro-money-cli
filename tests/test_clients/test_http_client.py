@@ -3,8 +3,8 @@ from http import HTTPStatus
 
 import pytest
 
-from clients.errors import HttpError
-from clients.http_client import HttpClient
+from skypro.clients.errors import HttpError
+from skypro.clients.http_client import HttpClient
 
 
 @pytest.fixture

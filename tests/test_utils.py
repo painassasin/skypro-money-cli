@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from utils import get_work_costs
+from skypro.utils import get_work_costs
 
 
 @pytest.fixture(autouse=True)
@@ -14,7 +14,7 @@ def clear_get_work_costs_cache():
 
 @pytest.fixture
 def mocked_base_dir(tmp_path, monkeypatch) -> Path:
-    monkeypatch.setattr('utils.work_costs.BASE_DIR', tmp_path)
+    monkeypatch.setattr('skypro.utils.work_costs.BASE_DIR', tmp_path)
     return tmp_path
 
 

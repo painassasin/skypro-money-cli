@@ -3,7 +3,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-BASE_DIR = Path.cwd()
+BASE_DIR = Path(__file__).parent.resolve()
 
 
 class SkyPro(BaseModel):
@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     skypro: SkyPro = Field(default_factory=SkyPro)
 
     model_config = SettingsConfigDict(
-        env_nested_delimiter='__', env_file=BASE_DIR / '.env'
+        env_nested_delimiter='__', env_file=Path.cwd() / '.env'
     )
 
 
