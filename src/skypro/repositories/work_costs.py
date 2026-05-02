@@ -1,7 +1,7 @@
 import json
 from functools import cache
 
-from .settings import BASE_DIR
+from skypro.config.settings import BASE_DIR
 
 
 @cache

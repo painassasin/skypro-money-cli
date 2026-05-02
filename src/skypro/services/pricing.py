@@ -1,14 +1,14 @@
 from collections.abc import Iterable
-from operator import itemgetter
+from decimal import Decimal
 
 from skypro.config.settings import settings
-from skypro.services.dto import WorkSummary
+from skypro.domain import WorkItem
 
 
 def calculate_total_price(
-    work_summary: Iterable[WorkSummary], *, with_tax: bool = False
-) -> float:
-    total = sum(map(itemgetter('total_price'), work_summary))
+    work_summary: Iterable[WorkItem], *, with_tax: bool = False
+) -> Decimal:
+    total = sum((work.total_price for work in work_summary), start=Decimal())
     if with_tax:
-        total *= (100 - settings.tax_percent) / 100
-    return float(total)
+        total *= (Decimal(100) - Decimal(str(settings.tax_percent))) / Decimal(100)
+    return total

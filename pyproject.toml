@@ -68,7 +68,7 @@ inline-quotes = "single"
 [tool.pytest]
 asyncio_mode = "auto"
 asyncio_debug = true
-addopts = "--cov=src --cov-report term-missing"
+addopts = ["--cov=src", "--cov-report", "term-missing"]
 
 [tool.coverage.run]
 branch = true
