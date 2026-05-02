@@ -7,21 +7,23 @@ from typer import Option
 
 from skypro.api.http.errors import HttpError
 from skypro.api.skypro.errors import AuthenticationError
-from skypro.cli.commands import calculate_command
+from skypro.cli import commands
 
-app = typer.Typer(help='Skypro mentor app')
+app = typer.Typer()
 console = Console()
 
 
-@app.command()
-def calculate(
-    year: int | None = Option(None, help='Year to calculate'),
-    month: int | None = Option(None, help='Month to calculate'),
+@app.command(name='statistics')
+def show_statistic(
+    year: int | None = Option(None, help='Год для расчета'),
+    month: int | None = Option(None, help='Месяц для расчета'),
 ) -> None:
-    """Calculate work costs"""
-    with console.status('[cyan]Calculate work costs'):
+    """Расчет стоимости работ"""
+    with console.status('[cyan]Расчет стоимости работ'):
         try:
-            asyncio.run(calculate_command(console=console, year=year, month=month))
+            asyncio.run(
+                commands.show_statistics(console=console, year=year, month=month)
+            )
         except (HttpError, AuthenticationError) as e:
             console.print(f'[bold red]Error: {e!s}[/]')
             raise Exit(code=1) from e

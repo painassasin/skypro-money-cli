@@ -1,3 +1,3 @@
-from .calculate import calculate_command
+from .statistics import show_statistics
 
-__all__ = ('calculate_command',)
+__all__ = ('show_statistics',)

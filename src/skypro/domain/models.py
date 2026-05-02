@@ -4,11 +4,21 @@ from enum import StrEnum
 
 
 class WorkType(StrEnum):
-    HOMEWORK = 'Домашние работы'
-    COURSEWORK = 'Курсовые работы'
-    DIPLOMA = 'Дипломные работы'
-    LIVE = 'Лайвы'
-    CONSULTATION = 'Консультации'
+    HOMEWORK = 'homework'
+    COURSEWORK = 'coursework'
+    DIPLOMA = 'diploma'
+    LIVE = 'live'
+    CONSULTATION = 'consultation'
+
+    @property
+    def label(self) -> str:
+        return {
+            WorkType.HOMEWORK: 'Домашние работы',
+            WorkType.COURSEWORK: 'Курсовые работы',
+            WorkType.DIPLOMA: 'Дипломные работы',
+            WorkType.LIVE: 'Лайвы',
+            WorkType.CONSULTATION: 'Консультации',
+        }[self]
 
 
 @dataclass(frozen=True)

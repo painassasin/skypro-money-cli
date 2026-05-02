@@ -10,7 +10,7 @@ from skypro.services import calculate_total_price, get_work_summary
 from skypro.utils import format_price, get_month_range
 
 
-async def calculate_command(
+async def show_statistics(
     console: Console,
     year: int | None,
     month: int | None,
@@ -37,10 +37,10 @@ def resolve_period(year: int | None, month: int | None) -> tuple[date, date]:
 
 def build_work_summary_table(work_summary: list[WorkItem]) -> Table:
     table = Table(
-        Column('Work Type', style='cyan'),
-        Column('Count', style='magenta'),
-        Column('Amount', style='magenta', justify='right'),
-        title='Mentor Statistics',
+        Column('Тип', style='cyan'),
+        Column('Количество', style='magenta', justify='center'),
+        Column('Оплата', style='magenta', justify='right'),
+        title='Статистика за месяц',
     )
 
     for work in work_summary:
@@ -48,7 +48,7 @@ def build_work_summary_table(work_summary: list[WorkItem]) -> Table:
             continue
 
         table.add_row(
-            work.type.value,
+            work.type.label,
             str(work.count),
             format_price(work.total_price),
         )
@@ -56,7 +56,7 @@ def build_work_summary_table(work_summary: list[WorkItem]) -> Table:
     total = calculate_total_price(work_summary)
     total_with_tax = calculate_total_price(work_summary, with_tax=True)
     table.add_section()
-    table.add_row('Total', '', format_price(total))
-    table.add_row('Total amount', '', format_price(total_with_tax))
+    table.add_row('Итого', '', format_price(total))
+    table.add_row('После уплаты налога', '', format_price(total_with_tax))
 
     return table
