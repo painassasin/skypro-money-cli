@@ -87,7 +87,9 @@ async def test_get_account_data(
 ):
     httpx_mock.add_response(
         method='GET',
-        url=re.compile(r'https://operation-planning.sky.pro/mentor-cabinet/api/data/.*'),
+        url=re.compile(
+            r'https://operation-planning.sky.pro/mentor-cabinet/api/data/.*'
+        ),
         json=account_data_response,
     )
     start_date, end_date = date(2026, 1, 1), date(2026, 1, 31)

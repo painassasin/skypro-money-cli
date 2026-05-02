@@ -1,4 +1,5 @@
 import asyncio
+from calendar import IllegalMonthError
 
 import typer
 from click.exceptions import Exit
@@ -24,6 +25,6 @@ def show_statistic(
             asyncio.run(
                 commands.show_statistics(console=console, year=year, month=month)
             )
-        except (HttpError, AuthenticationError) as e:
+        except (HttpError, AuthenticationError, IllegalMonthError) as e:
             console.print(f'[bold red]Error: {e!s}[/]')
             raise Exit(code=1) from e
