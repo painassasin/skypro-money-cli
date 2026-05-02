@@ -1,3 +1,7 @@
+.PHONY: install-requirements
+install-requirements:
+	uv sync --frozen --all-groups
+
 .PHONY: format
 format:
 	ruff format .
