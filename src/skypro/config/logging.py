@@ -1,25 +1,51 @@
 import logging
+import logging.config
 from functools import cache
-from logging.handlers import RotatingFileHandler
+
+from rich.console import Console
+from rich.logging import RichHandler
 
 from .settings import BASE_DIR, settings
 
 LOG_DIR = BASE_DIR / 'logs'
 
+LOGGING_CONFIG = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'formatter': {
+            'format': '%(asctime)s - %(levelname)s - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers': {
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOG_DIR / 'skypro.log',
+            'maxBytes': 10 * 1024,  # 10Mb
+            'backupCount': 5,
+            'formatter': 'formatter',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': settings.log_level,
+    },
+    'loggers': {
+        'httpx': {'handlers': ['file'], 'level': logging.WARNING, 'propagate': True},
+    },
+}
+
 
 @cache
 def configure_logging() -> None:
     LOG_DIR.mkdir(exist_ok=True)
+    logging.config.dictConfig(LOGGING_CONFIG)
 
-    file_handler = RotatingFileHandler(
-        filename=LOG_DIR / 'skypro.log', maxBytes=10_000, backupCount=5
+
+def enable_console_logging(console: Console) -> None:
+    root_logger = logging.getLogger()
+    console_handler = RichHandler(
+        console=console, rich_tracebacks=True, show_time=False
     )
-
-    logging.basicConfig(
-        level=settings.log_level,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        handlers=[file_handler],
-    )
-
-    logging.getLogger('httpx').setLevel(logging.WARNING)
+    root_logger.addHandler(console_handler)

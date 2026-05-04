@@ -25,7 +25,7 @@ lint = [
 ]
 
 [project.scripts]
-skypro-cli = "skypro.cli.__main__:main"
+sky-cli = "skypro.main:main"
 
 [tool.ruff]
 target-version = "py313"
@@ -82,5 +82,5 @@ show_missing = true
 skip_covered = true
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
