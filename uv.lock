@@ -797,8 +797,8 @@ wheels = [
 ]
 
 [[package]]
-name = "skypro"
-version = "0.1.0"
+name = "skypro-cli-tool"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
