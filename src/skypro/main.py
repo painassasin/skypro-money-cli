@@ -1,8 +1,7 @@
 import locale
 
+from skypro.cli.app import app
 from skypro.config.logging import configure_logging
-
-from .app import app
 
 
 def main() -> None:

@@ -1,3 +1,4 @@
+from calendar import IllegalMonthError
 from datetime import UTC, date, datetime
 
 from click.exceptions import Exit
@@ -23,7 +24,7 @@ async def show_summary(
 
         table = render_summary_table(report, total, after_tax)
         console.print(table)
-    except (RepositoryError, DomainError) as e:
+    except (RepositoryError, DomainError, IllegalMonthError) as e:
         console.print(f'[bold red]Error: {e!s}[/]')
         raise Exit(code=1) from e
 
