@@ -1,32 +1,15 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from enum import StrEnum
+
+from .enums import WorkType
+from .errors import InvalidPriceError
 
 
-class WorkType(StrEnum):
-    HOMEWORK = 'homework'
-    COURSEWORK = 'coursework'
-    DIPLOMA = 'diploma'
-    LIVE = 'live'
-    CONSULTATION = 'consultation'
+@dataclass(slots=True, frozen=True)
+class WorkPrice:
+    work_type: WorkType
+    price: Decimal
 
-    @property
-    def label(self) -> str:
-        return {
-            WorkType.HOMEWORK: 'Домашние работы',
-            WorkType.COURSEWORK: 'Курсовые работы',
-            WorkType.DIPLOMA: 'Дипломные работы',
-            WorkType.LIVE: 'Лайвы',
-            WorkType.CONSULTATION: 'Консультации',
-        }[self]
-
-
-@dataclass(frozen=True)
-class WorkItem:
-    type: WorkType
-    count: int
-    unit_price: Decimal
-
-    @property
-    def total_price(self) -> Decimal:
-        return self.unit_price * self.count
+    def __post_init__(self) -> None:
+        if self.price <= Decimal(0):
+            raise InvalidPriceError
