@@ -1,3 +1,3 @@
-from .work_costs import load_work_costs
+from .work import get_works_prices
 
-__all__ = ('load_work_costs',)
+__all__ = ('get_works_prices',)
