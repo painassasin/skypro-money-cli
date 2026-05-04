@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 
 from skypro.domain.enums import WorkType
-from skypro.repositories import get_works_prices
-from skypro.repositories.errors import PriceLoadError
+from skypro.infra.repositories import get_works_prices
+from skypro.infra.repositories.errors import PriceLoadError
 
 
 @pytest.fixture
