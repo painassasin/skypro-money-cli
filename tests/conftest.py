@@ -1,3 +1,4 @@
+import locale
 import random
 from collections.abc import AsyncIterator
 
@@ -6,6 +7,11 @@ import pytest
 from skypro.domain.enums import WorkType
 from skypro.infra.api.skypro.client import SkyProClient
 from skypro.infra.http.client import HttpClient
+
+
+@pytest.fixture(autouse=True, scope='session')
+def activate_rus_locale():
+    locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 
 @pytest.fixture
