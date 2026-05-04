@@ -8,7 +8,7 @@ from skypro.domain.models import WorkPrice, WorkReportItem, WorkSummary
 from skypro.domain.services import build_work_report
 
 
-def test_build_work_report_returns_report_items() -> None:
+def test_build_work_report_returns_report_items():
     prices = [
         WorkPrice(work_type=WorkType.HOMEWORK, price=Decimal(100)),
         WorkPrice(work_type=WorkType.COURSEWORK, price=Decimal(250)),
@@ -36,7 +36,7 @@ def test_build_work_report_returns_report_items() -> None:
     ]
 
 
-def test_build_work_report_raises_error_when_price_missing() -> None:
+def test_build_work_report_raises_error_when_price_missing():
     prices = [WorkPrice(work_type=WorkType.HOMEWORK, price=Decimal(100))]
     summaries = [WorkSummary(work_type=WorkType.DIPLOMA, quantity=1)]
 
