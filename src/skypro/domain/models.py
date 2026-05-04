@@ -23,3 +23,11 @@ class WorkSummary:
     def __post_init__(self) -> None:
         if self.quantity < 0:
             raise InvalidQuantityError
+
+
+@dataclass(frozen=True)
+class WorkReportItem:
+    work_type: WorkType
+    quantity: int
+    price: Decimal
+    total: Decimal
