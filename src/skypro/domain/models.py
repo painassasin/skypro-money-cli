@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 from .enums import WorkType
-from .errors import InvalidPriceError
+from .errors import InvalidPriceError, InvalidQuantityError
 
 
 @dataclass(slots=True, frozen=True)
@@ -13,3 +13,13 @@ class WorkPrice:
     def __post_init__(self) -> None:
         if self.price <= Decimal(0):
             raise InvalidPriceError
+
+
+@dataclass(slots=True, frozen=True)
+class WorkSummary:
+    work_type: WorkType
+    quantity: int
+
+    def __post_init__(self) -> None:
+        if self.quantity < 0:
+            raise InvalidQuantityError
