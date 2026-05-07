@@ -23,22 +23,21 @@ def render_summary_table(
     table = Table(
         Column('Тип', style='cyan'),
         Column('Количество', style='magenta', justify='center'),
+        Column('Стоимость', style='magenta', justify='right'),
         Column('Оплата', style='magenta', justify='right'),
         title='Статистика работ за месяц',
     )
 
     for item in report:
-        if not item.quantity:
-            continue
-
         table.add_row(
             work_type_translate_map[item.work_type],
             str(item.quantity),
             format_price(item.price),
+            format_price(item.total),
         )
 
     table.add_section()
-    table.add_row('Итого', '', format_price(total))
-    table.add_row('После уплаты налога', '', format_price(total_after_tax))
+    table.add_row('Итого', '', '', format_price(total))
+    table.add_row('После уплаты налога', '', '', format_price(total_after_tax))
 
     return table
