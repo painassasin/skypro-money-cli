@@ -7,6 +7,7 @@ from typer import Option
 from skypro.config.logging import enable_console_logging
 
 from . import commands
+from .commands import initialize_settings
 
 app = typer.Typer()
 console = Console()
@@ -23,3 +24,10 @@ def get_summary(
     if verbose:
         enable_console_logging(console)
     asyncio.run(commands.show_summary(console, year, month))
+
+
+@app.command(name='init')
+def init_settings() -> None:
+    """Установка настроек."""
+    asyncio.run(initialize_settings(console))
+    console.print('[green]OK[/]')

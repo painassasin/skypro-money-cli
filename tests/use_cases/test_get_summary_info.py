@@ -44,8 +44,10 @@ def mocked_tax_percent(monkeypatch):
     monkeypatch.setattr(domain_settings, 'tax_percent', 6.0)
 
 
+@pytest.mark.usefixtures('mocked_tax_percent')
 async def test_get_summary_info_returns_report_totals_and_tax(
-    mocked_get_works_prices, mocked_get_summary
+    mocked_get_works_prices,
+    mocked_get_summary,
 ) -> None:
     start_date, end_date = date(2026, 1, 1), date(2026, 1, 31)
 

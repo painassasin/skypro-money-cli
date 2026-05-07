@@ -2,21 +2,20 @@
 
 ## How to start
 
-Set environment variables to `.bashrc`
+Initialise app
 
 ```commandline
-SKYPRO__EMAIL=ivan.ivanov@skyeng.ru
-SKYPRO__PASSWORD=secret-password
+sky-cli init
 ```
 
 Check money you are earned this month
 
 ```commandline
-sky-cli
+sky-cli summary
 ```
 
 Another month or year
 
 ```commandline
-sky-cli --month 3 --year 2026
+sky-cli summary --month 3 --year 2026
 ```
