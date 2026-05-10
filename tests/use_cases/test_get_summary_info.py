@@ -49,12 +49,10 @@ async def test_get_summary_info_returns_report_totals_and_tax(
     mocked_get_works_prices,
     mocked_get_summary,
 ) -> None:
-    start_date, end_date = date(2026, 1, 1), date(2026, 1, 31)
-
-    summary_info = await get_summary_info(start_date, end_date)
+    summary_info = await get_summary_info(2026, 1)
 
     mocked_get_works_prices.assert_called_once()
-    mocked_get_summary.assert_awaited_once_with(start_date, end_date)
+    mocked_get_summary.assert_awaited_once_with(date(2026, 1, 1), date(2026, 1, 31))
 
     assert summary_info == SummaryInfo(
         report=[
