@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from skypro.config.settings import settings
+from skypro.config import get_settings
 from skypro.domain.errors import MissingWorkPriceError
 from skypro.domain.models import WorkPrice, WorkReportItem, WorkSummary
 
@@ -33,5 +33,5 @@ def calculate_total(report: list[WorkReportItem]) -> Decimal:
 
 
 def apply_tax(amount: Decimal) -> Decimal:
-    tax_rate = Decimal(str(settings.tax_percent)) / Decimal(100)
+    tax_rate = Decimal(str(get_settings().tax_percent)) / Decimal(100)
     return amount * (Decimal(1) - tax_rate)

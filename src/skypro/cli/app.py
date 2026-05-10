@@ -1,13 +1,14 @@
 import asyncio
 
 import typer
+from pydantic import ValidationError
 from rich.console import Console
 from typer import Option
 
-from skypro.config.logging import enable_console_logging
+from skypro.config import enable_console_logging, get_settings
 
 from . import commands
-from .commands import initialize_settings
+from .utils import set_skypro_settings
 
 app = typer.Typer()
 console = Console()
@@ -26,8 +27,9 @@ def get_summary(
     asyncio.run(commands.show_summary(console, year, month))
 
 
-@app.command(name='init')
-def init_settings() -> None:
-    """Установка настроек."""
-    asyncio.run(initialize_settings(console))
-    console.print('[green]OK[/]')
+@app.callback()
+def check_settings() -> None:
+    try:
+        get_settings()
+    except ValidationError:
+        set_skypro_settings(console)

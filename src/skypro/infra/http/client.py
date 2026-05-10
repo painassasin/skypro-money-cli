@@ -5,7 +5,7 @@ from typing import Any, Self
 import httpx
 from httpx import AsyncClient, Request, Response
 
-from skypro.config.settings import settings
+from skypro.config import get_settings
 
 from .errors import HttpError
 
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class HttpClient:
     def __init__(self, timeout: int | None = None) -> None:
         self._client = AsyncClient(
-            timeout=timeout or settings.default_request_timeout,
+            timeout=timeout or get_settings().default_request_timeout,
             follow_redirects=True,
             event_hooks={'request': [_log_request], 'response': [_log_response]},
         )

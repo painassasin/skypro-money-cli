@@ -8,16 +8,9 @@ import pytest
 from pytest_httpx import HTTPXMock
 from pytest_mock import MockFixture
 
-from skypro.config.settings import settings
 from skypro.infra.api.errors import AuthenticationError
 from skypro.infra.api.skypro.client import SkyProClient
 from skypro.infra.api.skypro.dto import AccountDataResponse
-
-
-@pytest.fixture(autouse=True)
-def skypro_credentials(mocker: MockFixture) -> None:
-    mocker.patch.object(settings.skypro, 'email', 'mentor@example.com')
-    mocker.patch.object(settings.skypro, 'password', 'secret-password')
 
 
 @pytest.fixture

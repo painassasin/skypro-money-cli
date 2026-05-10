@@ -1,7 +1,7 @@
 import logging
 from datetime import date
 
-from skypro.config.settings import settings
+from skypro.config import get_settings
 from skypro.infra.api.base import BaseApiClient
 from skypro.infra.api.errors import AuthenticationError
 from skypro.infra.http.client import HttpClient
@@ -52,8 +52,8 @@ class SkyProClient(BaseApiClient):
         response = await self._post(
             self.login_url,
             data={
-                'email': settings.skypro.email,
-                'password': settings.skypro.password,
+                'email': get_settings().skypro.email,
+                'password': get_settings().skypro.password,
                 'csrfmiddlewaretoken': csrf_token,
             },
             headers={'Referer': str(self.cookies)},

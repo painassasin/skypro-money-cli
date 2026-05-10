@@ -1,7 +1,7 @@
 import json
 from decimal import Decimal, InvalidOperation
 
-from skypro.config.settings import BASE_DIR
+from skypro.config import BASE_DIR
 from skypro.domain.enums import WorkType
 from skypro.domain.models import WorkPrice
 
