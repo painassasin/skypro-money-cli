@@ -1,12 +1,12 @@
 import asyncio
 from asyncio import gather
-from datetime import date
 from decimal import Decimal
 from typing import NamedTuple
 
 from skypro.domain.models import WorkReportItem
 from skypro.domain.services import apply_tax, build_work_report, calculate_total
 from skypro.infra.repositories import get_summary, get_works_prices
+from skypro.utils import get_month_range
 
 
 class SummaryInfo(NamedTuple):
@@ -15,7 +15,9 @@ class SummaryInfo(NamedTuple):
     total_after_tax: Decimal
 
 
-async def get_summary_info(start_date: date, end_date: date) -> SummaryInfo:
+async def get_summary_info(year: int, month: int) -> SummaryInfo:
+    start_date, end_date = get_month_range(year, month)
+
     work_prices, work_summaries = await gather(
         asyncio.to_thread(get_works_prices),
         get_summary(start_date, end_date),
