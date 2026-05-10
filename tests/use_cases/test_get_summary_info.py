@@ -5,7 +5,6 @@ import pytest
 
 from skypro.domain.enums import WorkType
 from skypro.domain.models import WorkPrice, WorkReportItem, WorkSummary
-from skypro.domain.services import settings as domain_settings
 from skypro.use_cases import SummaryInfo, get_summary_info
 
 
@@ -39,16 +38,12 @@ def mocked_get_summary(mocker, work_summaries):
     )
 
 
-@pytest.fixture
-def mocked_tax_percent(monkeypatch):
-    monkeypatch.setattr(domain_settings, 'tax_percent', 6.0)
-
-
-@pytest.mark.usefixtures('mocked_tax_percent')
 async def test_get_summary_info_returns_report_totals_and_tax(
+    settings,
     mocked_get_works_prices,
     mocked_get_summary,
 ) -> None:
+    settings.tax_percent = 6.0
     summary_info = await get_summary_info(2026, 1)
 
     mocked_get_works_prices.assert_called_once()
