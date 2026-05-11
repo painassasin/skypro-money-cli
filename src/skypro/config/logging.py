@@ -5,7 +5,7 @@ from functools import cache
 from rich.console import Console
 from rich.logging import RichHandler
 
-from .settings import HOME_DIR
+from .settings import HOME_DIR, get_settings
 
 LOG_DIR = HOME_DIR / 'logs'
 
@@ -27,7 +27,7 @@ LOGGING_CONFIG = {
             'formatter': 'formatter',
         },
     },
-    'root': {'handlers': ['file'], 'level': 'INFO'},
+    'root': {'handlers': ['file']},
     'loggers': {
         'httpx': {'handlers': ['file'], 'level': logging.WARNING, 'propagate': True},
     },
@@ -37,6 +37,7 @@ LOGGING_CONFIG = {
 @cache
 def configure_logging() -> None:
     LOG_DIR.mkdir(mode=0o700, exist_ok=True, parents=True)
+    LOGGING_CONFIG['root']['level'] = get_settings().log_level.upper()
     logging.config.dictConfig(LOGGING_CONFIG)
 
 

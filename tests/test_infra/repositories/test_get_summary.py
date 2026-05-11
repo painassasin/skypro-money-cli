@@ -4,7 +4,7 @@ import pytest
 
 from skypro.domain.enums import WorkType
 from skypro.domain.models import WorkSummary
-from skypro.infra.api.errors import ApiError
+from skypro.infra.api.errors import ApiError, AuthenticationError
 from skypro.infra.api.skypro.client import SkyProClient
 from skypro.infra.api.skypro.dto import AccountDataResponse
 from skypro.infra.http.errors import HttpError
@@ -64,4 +64,23 @@ async def test_invalid_sky_pro_api_response_raises_error(
     start_date, end_date = date(2026, 1, 1), date(2026, 1, 2)
 
     with pytest.raises(SummaryLoadError):
+        await get_summary(start_date, end_date)
+
+
+async def test_authentication_error_has_readable_message(mocked_get_account_data):
+    mocked_get_account_data.side_effect = AuthenticationError('Authentication failed')
+    start_date, end_date = date(2026, 1, 1), date(2026, 1, 2)
+
+    with pytest.raises(
+        SummaryLoadError,
+        match=r'SkyPro authentication failed\. Check email and password\.',
+    ):
+        await get_summary(start_date, end_date)
+
+
+async def test_http_error_message_is_preserved(mocked_get_account_data):
+    mocked_get_account_data.side_effect = HttpError('Network error: GET test-url')
+    start_date, end_date = date(2026, 1, 1), date(2026, 1, 2)
+
+    with pytest.raises(SummaryLoadError, match='Network error: GET test-url'):
         await get_summary(start_date, end_date)

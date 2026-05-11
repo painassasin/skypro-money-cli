@@ -3,6 +3,7 @@ from asyncio import gather
 from decimal import Decimal
 from typing import NamedTuple
 
+from skypro.config import get_settings
 from skypro.domain.models import WorkReportItem
 from skypro.domain.services import apply_tax, build_work_report, calculate_total
 from skypro.infra.repositories import get_summary, get_works_prices
@@ -25,6 +26,6 @@ async def get_summary_info(year: int, month: int) -> SummaryInfo:
 
     report = build_work_report(work_prices, work_summaries)
     total = calculate_total(report)
-    total_after_tax = apply_tax(total)
+    total_after_tax = apply_tax(total, get_settings().tax_percent)
 
     return SummaryInfo(report, total, total_after_tax)

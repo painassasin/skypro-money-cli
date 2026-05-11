@@ -1,7 +1,9 @@
+import json
 from functools import cache
 from pathlib import Path
+from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SecretStr
 from pydantic_settings import (
     BaseSettings,
     JsonConfigSettingsSource,
@@ -16,13 +18,14 @@ SETTINGS_FILE_PATH = HOME_DIR / 'settings.json'
 
 
 class SkyProSettings(BaseModel):
-    email: str
-    password: str
+    email: str | None = None
+    password: SecretStr | None = None
 
 
-class Settings(BaseSettings, json_file=SETTINGS_FILE_PATH, env_nested_delimiter='__'):
+class Settings(BaseSettings, json_file=SETTINGS_FILE_PATH):
     tax_percent: float = 6.0
     default_request_timeout: int = 3
+    log_level: Literal['debug', 'info'] = 'info'
 
     skypro: SkyProSettings = Field(default_factory=SkyProSettings)
 
@@ -30,19 +33,21 @@ class Settings(BaseSettings, json_file=SETTINGS_FILE_PATH, env_nested_delimiter=
     def settings_customise_sources(
         cls,
         settings_cls: type[BaseSettings],
-        env_settings: PydanticBaseSettingsSource,
         **_: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
-        return (
-            env_settings,
-            JsonConfigSettingsSource(settings_cls),
-        )
+        return (JsonConfigSettingsSource(settings_cls),)
 
 
 def save_settings(settings: Settings) -> None:
     SETTINGS_FILE_PATH.parent.mkdir(mode=0o700, exist_ok=True)
-    data = settings.model_dump_json(ensure_ascii=False, indent=2)
-    SETTINGS_FILE_PATH.write_text(data, encoding='utf-8')
+
+    data = settings.model_dump(mode='json')
+    data['skypro']['password'] = settings.skypro.password.get_secret_value()
+
+    with SETTINGS_FILE_PATH.open(mode='w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    get_settings.cache_clear()
 
 
 @cache

@@ -2,13 +2,22 @@
 
 ## How to start
 
-Initialise app
+Show current config
 
 ```commandline
-sky-cli init
+sky-cli config
 ```
 
-Check money you are earned this month
+Reconfigure SkyPro access
+
+```commandline
+sky-cli config --skypro
+```
+
+If SkyPro credentials are missing, the `summary` command exits with an error.
+Configure them first with `sky-cli config --skypro`.
+
+Check money you earned this month
 
 ```commandline
 sky-cli summary
