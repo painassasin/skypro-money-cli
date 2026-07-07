@@ -9,5 +9,11 @@ class ServiceSummary(BaseModel, populate_by_name=True):
     individual_consultation: int = Field(0, alias='ИК', ge=0)
 
 
+class ServiceByProfession(BaseModel):
+    profession: str
+    services: ServiceSummary
+
+
 class AccountDataResponse(BaseModel):
     services_summary: ServiceSummary
+    services_by_profession: list[ServiceByProfession] = []
