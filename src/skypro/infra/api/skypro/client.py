@@ -53,7 +53,7 @@ class SkyProClient(BaseApiClient):
             self.login_url,
             data={
                 'email': get_settings().skypro.email,
-                'password': get_settings().skypro.password.get_secret_value(),
+                'password': get_settings().skypro.password_value,
                 'csrfmiddlewaretoken': csrf_token,
             },
             headers={'Referer': str(self.cookies)},

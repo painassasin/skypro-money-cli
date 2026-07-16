@@ -1,6 +1,7 @@
 import logging
 import logging.config
 from functools import cache
+from typing import Any
 
 from rich.console import Console
 from rich.logging import RichHandler
@@ -9,7 +10,7 @@ from .settings import HOME_DIR, get_settings
 
 LOG_DIR = HOME_DIR / 'logs'
 
-LOGGING_CONFIG = {
+LOGGING_CONFIG: dict[str, Any] = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {

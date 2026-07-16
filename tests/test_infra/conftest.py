@@ -1,8 +1,10 @@
+from typing import Any
+
 import pytest
 
 
 @pytest.fixture
-def account_data() -> dict:
+def account_data() -> dict[str, Any]:
     return {
         'services_by_profession': [
             {

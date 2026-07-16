@@ -21,6 +21,13 @@ class SkyProSettings(BaseModel):
     email: str | None = None
     password: SecretStr | None = None
 
+    @property
+    def password_value(self) -> str:
+        if not self.password:
+            raise RuntimeError('Password does not set')
+
+        return self.password.get_secret_value()
+
 
 class Settings(BaseSettings, json_file=SETTINGS_FILE_PATH):
     tax_percent: float = 6.0
@@ -30,7 +37,7 @@ class Settings(BaseSettings, json_file=SETTINGS_FILE_PATH):
     skypro: SkyProSettings = Field(default_factory=SkyProSettings)
 
     @classmethod
-    def settings_customise_sources(
+    def settings_customise_sources(  # type: ignore[override]
         cls,
         settings_cls: type[BaseSettings],
         **_: PydanticBaseSettingsSource,
@@ -42,7 +49,7 @@ def save_settings(settings: Settings) -> None:
     SETTINGS_FILE_PATH.parent.mkdir(mode=0o700, exist_ok=True)
 
     data = settings.model_dump(mode='json')
-    data['skypro']['password'] = settings.skypro.password.get_secret_value()
+    data['skypro']['password'] = settings.skypro.password_value
 
     with SETTINGS_FILE_PATH.open(mode='w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

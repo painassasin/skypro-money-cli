@@ -80,7 +80,7 @@ async def test_failed_to_fetch_csrf_token_error(
         await skypro_client.login()
 
 
-def _build_login_redirect_response(httpx_mock, redirect_url):
+def _build_login_redirect_response(httpx_mock: HTTPXMock, redirect_url: str) -> None:
     httpx_mock.add_response(
         method='POST', headers={'Location': redirect_url}, status_code=HTTPStatus.FOUND
     )

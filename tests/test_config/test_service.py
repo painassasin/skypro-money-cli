@@ -63,7 +63,7 @@ def test_configure_skypro_settings_updates_only_skypro_section(
     mocked_save_settings.assert_called_once_with(updated_settings)
     assert updated_settings.tax_percent == 13.0
     assert updated_settings.skypro.email == 'new@example.com'
-    assert updated_settings.skypro.password.get_secret_value() == 'new-password'
+    assert updated_settings.skypro.password_value == 'new-password'
 
 
 @pytest.mark.usefixtures('mocked_save_settings')
@@ -81,7 +81,7 @@ def test_configure_skypro_settings_preserves_current_password_on_blank_input(
     updated_settings = configure_skypro_settings(console)
 
     assert updated_settings.skypro.email == 'mentor@example.com'
-    assert updated_settings.skypro.password.get_secret_value() == 'saved-password'
+    assert updated_settings.skypro.password_value == 'saved-password'
 
 
 def test_ensure_skypro_configured_returns_existing_settings(
