@@ -12,6 +12,7 @@ check:
 	ruff check .
 	ruff format --check .
 	mypy .
+	typos .
 
 .PHONY: test
 test:
