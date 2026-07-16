@@ -1,6 +1,6 @@
 [project]
 name = "skypro-cli-tool"
-version = "0.3.1"
+version = "0.3.2"
 description = "SkyPro cli tool"
 readme = "README.md"
 requires-python = ">=3.13"
