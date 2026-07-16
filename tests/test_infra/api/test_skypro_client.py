@@ -26,19 +26,6 @@ def mocked_login(mocker: MockFixture) -> MagicMock:
     return mocker.patch.object(SkyProClient, 'login')
 
 
-@pytest.fixture
-def account_data_response() -> dict:
-    return {
-        'services_summary': {
-            'ДЗ': 1,
-            'КР': 2,
-            'ДР': 3,
-            'Лайв': 4,
-            'ИК': 5,
-        }
-    }
-
-
 @pytest.mark.usefixtures('login_url_response')
 async def test_success_login_set_is_authenticated_status(skypro_client, httpx_mock):
     _build_login_redirect_response(httpx_mock, '/mentor-cabinet/')
@@ -66,21 +53,19 @@ async def test_silence_skip_if_login_twice(skypro_client, httpx_mock):
     assert len(httpx_mock.get_requests()) == 3
 
 
-async def test_get_account_data(
-    skypro_client, httpx_mock, mocked_login, account_data_response
-):
+async def test_get_account_data(skypro_client, httpx_mock, mocked_login, account_data):
     httpx_mock.add_response(
         method='GET',
         url=re.compile(
             r'https://operation-planning.sky.pro/mentor-cabinet/api/data/.*'
         ),
-        json=account_data_response,
+        json=account_data,
     )
     start_date, end_date = date(2026, 1, 1), date(2026, 1, 31)
 
     data = await skypro_client.get_account_data(start_date, end_date)
 
-    assert data == AccountDataResponse(**account_data_response)
+    assert data == AccountDataResponse(**account_data)
     mocked_login.assert_called_once()
 
 

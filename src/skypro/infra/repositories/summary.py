@@ -28,12 +28,7 @@ async def get_summary(start_date: date, end_date: date) -> list[WorkSummary]:
     except (HttpError, ApiError, ValidationError) as e:
         raise SummaryLoadError(str(e) or 'Failed to load summary from SkyPro.') from e
 
-    if account_data.services_by_profession:
-        return _get_summary_by_service_by_profession(
-            *account_data.services_by_profession
-        )
-
-    return _get_summary_by_service_summary(account_data.services_summary)
+    return _get_summary_by_service_by_profession(*account_data.services_by_profession)
 
 
 def _get_summary_by_service_by_profession(
