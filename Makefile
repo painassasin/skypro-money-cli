@@ -11,6 +11,7 @@ format:
 check:
 	ruff check .
 	ruff format --check .
+	mypy .
 
 .PHONY: test
 test:

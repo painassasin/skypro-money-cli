@@ -21,8 +21,8 @@ def configure_skypro_settings(console: Console) -> Settings:
 
     email = console.input(f'{email_prompt}: ').strip() or current_email
     password = console.input('Password: ', password=True).strip()
-    if not password and current_settings.skypro.password.get_secret_value():
-        password = current_settings.skypro.password.get_secret_value()
+    if not password and current_settings.skypro.password:
+        password = current_settings.skypro.password_value
 
     updated_settings = current_settings.model_copy(
         update={

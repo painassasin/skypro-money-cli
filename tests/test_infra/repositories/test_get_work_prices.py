@@ -10,13 +10,13 @@ from skypro.infra.repositories.errors import PriceLoadError
 
 
 @pytest.fixture
-def mocked_base_dir(monkeypatch, tmp_path):
+def mocked_base_dir(monkeypatch, tmp_path: Path) -> Path:
     monkeypatch.setattr(f'{get_works_prices.__module__}.BASE_DIR', tmp_path)
     return tmp_path
 
 
 @pytest.fixture
-def work_prices_file(mocked_base_dir) -> Path:
+def work_prices_file(mocked_base_dir: Path) -> Path:
     return mocked_base_dir / 'work_prices.json'
 
 
