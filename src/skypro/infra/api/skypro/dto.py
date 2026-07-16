@@ -15,5 +15,4 @@ class ServiceByProfession(BaseModel):
 
 
 class AccountDataResponse(BaseModel):
-    services_summary: ServiceSummary
-    services_by_profession: list[ServiceByProfession] = []
+    services_by_profession: list[ServiceByProfession]

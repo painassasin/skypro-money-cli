@@ -13,19 +13,6 @@ from skypro.infra.repositories.summary import get_summary
 
 
 @pytest.fixture
-def account_data() -> dict:
-    return {
-        'services_summary': {
-            'ДЗ': 1,
-            'КР': 2,
-            'ДР': 3,
-            'Лайв': 4,
-            'ИК': 5,
-        }
-    }
-
-
-@pytest.fixture
 def account_data_response(account_data) -> AccountDataResponse:
     return AccountDataResponse.model_validate(account_data)
 
