@@ -1,9 +1,11 @@
+import locale
 from calendar import IllegalMonthError
 from datetime import date
+from decimal import Decimal
 
 import pytest
 
-from skypro.utils import get_month_range
+from skypro.utils import format_price, get_month_range
 
 
 @pytest.mark.parametrize(
@@ -23,3 +25,9 @@ def test_get_month_range_returns_first_and_last_day(
 def test_get_month_range_raises_for_invalid_month():
     with pytest.raises(IllegalMonthError):
         get_month_range(2026, 13)
+
+
+def test_format_price_returns_plain_price_when_locale_currency_fails(mocker):
+    mocker.patch('skypro.utils.locale.currency', side_effect=locale.Error)
+
+    assert format_price(Decimal('1234.5')) == '1,234.50'
