@@ -1,7 +1,7 @@
 from calendar import IllegalMonthError
 from datetime import UTC, datetime
 
-from click.exceptions import Exit
+import typer
 from rich.console import Console
 
 from skypro.cli.renders import render_summary_table
@@ -27,4 +27,4 @@ async def show_summary(
         console.print(table)
     except (RepositoryError, DomainError, IllegalMonthError) as e:
         console.print(f'[bold red]Error: {e!s}[/]')
-        raise Exit(code=1) from e
+        raise typer.Exit(code=1) from e
