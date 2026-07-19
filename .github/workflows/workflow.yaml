@@ -18,7 +18,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
@@ -35,7 +35,7 @@ jobs:
       SKYPRO__EMAIL: test@example.com
       SKYPRO__PASSWORD: test-password
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install required locale
         run: |
           sudo locale-gen ru_RU.UTF-8
@@ -54,7 +54,7 @@ jobs:
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
