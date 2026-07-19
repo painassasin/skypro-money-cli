@@ -54,6 +54,8 @@ def save_settings(settings: Settings) -> None:
     with SETTINGS_FILE_PATH.open(mode='w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+    SETTINGS_FILE_PATH.chmod(0o600)
+
     get_settings.cache_clear()
 
 
