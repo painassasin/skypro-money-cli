@@ -11,4 +11,7 @@ def get_month_range(year: int, month: int) -> tuple[date, date]:
 
 
 def format_price(price: Decimal) -> str:
-    return locale.currency(price, grouping=True)
+    try:
+        return locale.currency(price, grouping=True)
+    except locale.Error:
+        return f'{price:,.2f}'
