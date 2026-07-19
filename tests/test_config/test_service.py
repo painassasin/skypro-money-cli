@@ -1,3 +1,4 @@
+import os
 from unittest.mock import call
 
 import pytest
@@ -130,6 +131,7 @@ def test_save_settings_persists_secret_password_as_plain_string() -> None:
 
     saved = settings_module.SETTINGS_FILE_PATH.read_text(encoding='utf-8')
     assert '"password": "secret-password"' in saved
+    assert os.access(settings_module.SETTINGS_FILE_PATH, os.R_OK | os.W_OK)
 
 
 def build_settings(
