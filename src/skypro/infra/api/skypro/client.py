@@ -56,7 +56,6 @@ class SkyProClient(BaseApiClient):
                 'password': get_settings().skypro.password_value,
                 'csrfmiddlewaretoken': csrf_token,
             },
-            headers={'Referer': str(self.cookies)},
         )
 
         if response.url.path == self.login_url:
