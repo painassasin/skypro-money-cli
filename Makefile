@@ -13,6 +13,7 @@ check:
 	ruff format --check .
 	mypy .
 	typos .
+	uv lock --check
 
 .PHONY: test
 test:
