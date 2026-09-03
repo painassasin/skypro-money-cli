@@ -17,5 +17,6 @@ def account_data() -> dict[str, Any]:
                     'ИК': 5,
                 },
             }
-        ]
+        ],
+        'lives': [],
     }

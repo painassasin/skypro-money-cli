@@ -1,4 +1,10 @@
-from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import Any
+from zoneinfo import ZoneInfo
+
+from pydantic import BaseModel, Field, field_validator
+
+from skypro.config import settings
 
 
 class ServiceSummary(BaseModel, populate_by_name=True):
@@ -14,5 +20,20 @@ class ServiceByProfession(BaseModel):
     services: ServiceSummary
 
 
+class LiveInfo(BaseModel, strict=True):
+    title: str
+    date: datetime
+
+    @field_validator('date', mode='before')
+    @classmethod
+    def parse_datetime(cls, value: Any) -> Any:
+        if not isinstance(value, str):
+            return value
+
+        dt = datetime.strptime(value, '%d %B %Y %H:%M')  # noqa: DTZ007
+        return dt.replace(tzinfo=ZoneInfo(settings.get_settings().skypro.tz))
+
+
 class AccountDataResponse(BaseModel):
     services_by_profession: list[ServiceByProfession]
+    lives: list[LiveInfo]

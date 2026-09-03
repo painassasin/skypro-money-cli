@@ -20,6 +20,7 @@ SETTINGS_FILE_PATH = HOME_DIR / 'settings.json'
 class SkyProSettings(BaseModel):
     email: str | None = None
     password: SecretStr | None = None
+    tz: str = 'Europe/Moscow'
 
     @property
     def password_value(self) -> str:
