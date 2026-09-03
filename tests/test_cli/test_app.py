@@ -50,7 +50,8 @@ def test_config_command_prints_current_settings(mocker) -> None:
         '  "log_level": "info",\n'
         '  "skypro": {\n'
         '    "email": "mentor@example.com",\n'
-        '    "password": "**********"\n'
+        '    "password": "**********",\n'
+        '    "tz": "Europe/Moscow"\n'
         '  }\n'
         '}'
     )
