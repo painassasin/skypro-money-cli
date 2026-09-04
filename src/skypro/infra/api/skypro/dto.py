@@ -30,7 +30,7 @@ class LiveInfo(BaseModel, strict=True):
         if not isinstance(value, str):
             return value
 
-        dt = datetime.strptime(value, '%d %B %Y %H:%M')  # noqa: DTZ007
+        dt = datetime.strptime(value, '%d %B %Y %H:%M')  # ruff:ignore[call-datetime-strptime-without-zone]
         return dt.replace(tzinfo=ZoneInfo(settings.get_settings().skypro.tz))
 
 

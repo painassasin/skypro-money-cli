@@ -28,3 +28,9 @@ Another month or year
 ```commandline
 sky-cli summary --month 3 --year 2026
 ```
+
+You can see outcoming lives
+
+```commandline
+sky-cli lives
+```

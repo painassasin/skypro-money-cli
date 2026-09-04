@@ -53,3 +53,23 @@ def configure(
 
     settings = get_settings().model_dump(mode='json')
     console.print(json.dumps(settings, ensure_ascii=False, indent=2))
+
+
+@app.command(name='lives')
+def get_lives(
+    year: int | None = Option(None, help='Год для расчета'),
+    month: int | None = Option(None, help='Месяц для расчета'),
+    verbose: bool = typer.Option(False, '-v', '--verbose'),
+) -> None:
+    """Показать ближайшие лайвы"""
+    if not is_skypro_configured():
+        console.print(
+            '[red]Настройки SkyPro не заданы. '
+            'Укажите их командой `sky-cli config --skypro`.[/]'
+        )
+        raise typer.Exit(code=1)
+
+    if verbose:
+        enable_console_logging(console)
+
+    asyncio.run(commands.show_lives_info(console, year, month))

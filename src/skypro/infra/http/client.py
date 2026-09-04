@@ -47,7 +47,7 @@ class HttpClient:
             return response
 
 
-async def _log_request(request: Request) -> None:  # noqa: RUF029
+async def _log_request(request: Request) -> None:  # ruff:ignore[unused-async]
     logger.info(
         'HTTP request: %s %s',
         request.method,
@@ -55,7 +55,7 @@ async def _log_request(request: Request) -> None:  # noqa: RUF029
     )
 
 
-async def _log_response(response: Response) -> None:  # noqa: RUF029
+async def _log_response(response: Response) -> None:  # ruff:ignore[unused-async]
     logger.info(
         'HTTP response: %s %s -> %s',
         response.request.method,

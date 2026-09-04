@@ -2,6 +2,10 @@ import locale
 from calendar import monthrange
 from datetime import date
 from decimal import Decimal
+from functools import cache
+from zoneinfo import ZoneInfo
+
+import tzlocal
 
 
 def get_month_range(year: int, month: int) -> tuple[date, date]:
@@ -15,3 +19,8 @@ def format_price(price: Decimal) -> str:
         return locale.currency(price, grouping=True)
     except locale.Error:
         return f'{price:,.2f}'
+
+
+@cache
+def get_local_timezone() -> ZoneInfo:
+    return tzlocal.get_localzone()

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from decimal import Decimal
 
 from .enums import WorkType
@@ -31,3 +32,9 @@ class WorkReportItem:
     quantity: int
     price: Decimal
     total: Decimal
+
+
+@dataclass(frozen=True)
+class Live:
+    title: str
+    date: datetime
