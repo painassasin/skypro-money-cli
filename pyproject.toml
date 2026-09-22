@@ -71,6 +71,7 @@ preview = true
     "suspicious-non-cryptographic-random-usage", # Standard pseudo-random generators are not suitable for cryptographic purposes
     "magic-value-comparison", # Magic value used in comparison
     "float-equality-comparison", # Unreliable floating point equality comparison
+    "pytest-fixture-autouse",
 ]
 "*/cli/app.py" = [
     "boolean-type-hint-positional-argument", # Boolean-typed positional argument in function definition
