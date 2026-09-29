@@ -26,6 +26,7 @@ jobs:
         with:
           python-version: 3.13
           enable-cache: true
+          cache-suffix: "lint"
       - name: Install the project
         run: uv sync --frozen --group lint
       - name: Check linters
@@ -47,6 +48,7 @@ jobs:
         with:
           python-version: 3.13
           enable-cache: true
+          cache-suffix: "test"
       - name: Install the project
         run: uv sync --frozen --group test
       - name: Run tests
@@ -62,5 +64,6 @@ jobs:
         with:
           python-version: 3.13
           enable-cache: true
+          cache-suffix: "build"
       - name: Build package
         run: uv build
