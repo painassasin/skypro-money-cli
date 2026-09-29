@@ -1,6 +1,6 @@
 [project]
 name = "skypro-cli-tool"
-version = "0.3.4"
+version = "0.3.5"
 description = "SkyPro cli tool"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -16,7 +16,6 @@ dependencies = [
 dev = [
     { include-group = "test" },
     { include-group = "lint" },
-    "ipython>=9.13.0",
 ]
 test = [
     "freezegun>=1.5.5",
