@@ -10,7 +10,7 @@ permissions:
 jobs:
   validate:
     name: Validate release version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - name: Compare tag with package version
@@ -27,7 +27,7 @@ jobs:
 
   build:
     name: Build distributions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: validate
     steps:
       - uses: actions/checkout@v6
@@ -47,7 +47,7 @@ jobs:
 
   publish:
     name: Publish to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: build
     environment:
       name: pypi
