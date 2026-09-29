@@ -18,7 +18,7 @@ env:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - name: Install uv
@@ -32,7 +32,7 @@ jobs:
         run: uv run make check
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       SKYPRO__EMAIL: test@example.com
       SKYPRO__PASSWORD: test-password
@@ -54,7 +54,7 @@ jobs:
 
   build:
     needs: [lint, test]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - name: Install uv
