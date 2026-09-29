@@ -36,6 +36,7 @@ jobs:
         with:
           python-version: 3.13
           enable-cache: true
+          cache-suffix: "build"
       - name: Build package
         run: uv build
       - name: Upload distributions
